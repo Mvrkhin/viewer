@@ -144,7 +144,7 @@ input:focus-visible{outline-offset:0;border-color:var(--ac)}
 .fm i{font-style:normal;direction:ltr;font:600 11px/1.9 ui-monospace,SFMono-Regular,Menlo,Consolas,monospace;color:var(--ink);background:var(--sf);border:1px solid var(--ln);border-radius:999px;padding:0 9px;transition:border-color .15s,background .15s,color .15s}
 html.tg,html.tg body{height:var(--tg-viewport-height,100%);overscroll-behavior:none}
 html.tg{-webkit-tap-highlight-color:transparent;touch-action:manipulation}
-html.tg #pr{display:none!important}
+html.tg #pr,html.tg #dl,html.tg #exp{display:none!important}
 .fm i:hover{border-color:var(--d);background:color-mix(in srgb,var(--d) 12%,var(--sf))}
 #log{display:flex;flex-direction:column;gap:1px;max-height:60px;overflow:auto;font-size:11.5px;color:var(--mut)}
 #log:empty{display:none}
@@ -255,7 +255,7 @@ html{scroll-behavior:smooth}
 .seg button{display:inline-flex;align-items:center;gap:6px;height:32px;padding:0 12px;border-radius:10px;font-size:13px;font-weight:500;color:var(--mut);background:transparent;background-image:none}
 .seg button.on{background:var(--sf);background-image:none;color:var(--ink);font-weight:700;box-shadow:0 1px 4px rgba(60,40,120,.2)}
 .seg em{font-style:normal;font-size:11px;font-weight:700;min-width:20px;line-height:18px;padding:0 6px;border-radius:999px;background:var(--acs);color:var(--ac);text-align:center}
-.r2 select{flex:none;height:40px;max-width:170px;padding:0 12px 0 34px;border-radius:12px;font-size:13px;appearance:none;-webkit-appearance:none;cursor:pointer;
+.r2 select{flex:none;height:40px;max-width:100%;text-overflow:ellipsis;padding:0 12px 0 34px;border-radius:12px;font-size:13px;appearance:none;-webkit-appearance:none;cursor:pointer;
   background-image:linear-gradient(45deg,transparent 50%,var(--mut) 50%),linear-gradient(135deg,var(--mut) 50%,transparent 50%);
   background-position:13px 50%,18px 50%;background-size:5px 5px,5px 5px;background-repeat:no-repeat}
 #mass{flex-basis:auto;background:var(--lks);border:1px solid color-mix(in srgb,var(--lk) 22%,transparent);border-radius:14px;padding:11px 14px}
@@ -426,9 +426,9 @@ html[lang=en] body{font-family:system-ui,-apple-system,"Segoe UI",Roboto,"Helvet
 <div id="qpop" role="tooltip" hidden data-t="qpop">HTML هم خروجی یادداشت‌ها و هم اسنپ‌شات کامل برنامه را می‌خواند. ZIP می‌تواند شامل بقیه‌ی فرمت‌ها باشد.</div>
 <h3 data-t="fmt_h">فرمت فایل‌ها</h3>
 <div class="fm">
-<div><span data-t="fmt_data">داده و بکاپ</span><p><i>JSON</i><i>.mne.json</i><i>CSV</i><i>TSV</i></p></div>
-<div><span data-t="fmt_text">متن</span><p><i>TXT</i><i>MD</i></p></div>
-<div><span data-t="fmt_doc">سند و صفحه</span><p><i>DOCX</i><i>HTML</i><button type="button" class="qm" id="qh" aria-label="توضیح درباره‌ی فرمت‌ها" data-a="aria-label:qh_t" aria-expanded="false" aria-controls="qpop">?</button></p></div>
+<div><span data-t="fmt_data">داده و بکاپ</span><p><i>JSON</i><i>.mne.json</i><i>CSV</i><i>TSV</i><i>SQLITE / DB</i></p></div>
+<div><span data-t="fmt_text">متن</span><p><i>TXT</i><i>MD</i><i>MARKDOWN</i><i>SQL</i><i>LOG</i><i data-t="fmt_anytext">سایر فایل‌های متنی</i></p></div>
+<div><span data-t="fmt_doc">سند و صفحه</span><p><i>DOCX</i><i>HTML</i><i>HTM</i><button type="button" class="qm" id="qh" aria-label="توضیح درباره‌ی فرمت‌ها" data-a="aria-label:qh_t" aria-expanded="false" aria-controls="qpop">?</button></p></div>
 <div><span data-t="fmt_pkg">بسته</span><p><i>ZIP</i></p></div>
 </div>
 <h3 data-t="enc_h">رمزنگاری‌های پشتیبانی‌شده</h3>
@@ -519,10 +519,10 @@ html[lang=en] body{font-family:system-ui,-apple-system,"Segoe UI",Roboto,"Helvet
 </ul>
 <h5>فرمت‌های قابل خواندن</h5>
 <ul>
-<li><b>داده و بکاپ:</b> JSON، فایل‌های <code>.mne.json</code>، CSV و TSV.</li>
-<li><b>متن:</b> TXT و MD. اگر فایل با فرمت اکسپورت Markhin ساخته شده باشد، به یادداشت‌های جدا شکسته می‌شود (با نام و پوشه).</li>
-<li><b>سند و صفحه:</b> DOCX و HTML. HTML هم خروجی یادداشت‌ها و هم اسنپ‌شات کامل برنامه را می‌خواند.</li>
-<li><b>بسته:</b> ZIP؛ فایل‌های داخلش (json، csv، tsv، txt، md، html، docx) یکی‌یکی خوانده می‌شوند و بقیه با پیام «رد شد» نادیده گرفته می‌شوند.</li>
+<li><b>داده و بکاپ:</b> JSON، فایل‌های <code>.mne.json</code>، CSV، TSV و دیتابیس SQLite (<code>.sqlite</code>، <code>.sqlite3</code>، <code>.db</code>؛ هر جدول یک یادداشت می‌شود و برای خواندنش اینترنت لازم است).</li>
+<li><b>متن:</b> TXT، MD، MARKDOWN، SQL و LOG. فایلی با پسوند ناشناخته هم به‌صورت متن ساده باز می‌شود. اگر فایل با فرمت اکسپورت Markhin ساخته شده باشد، به یادداشت‌های جدا شکسته می‌شود (با نام و پوشه).</li>
+<li><b>سند و صفحه:</b> DOCX، HTML و HTM. HTML هم خروجی یادداشت‌ها و هم اسنپ‌شات کامل برنامه را می‌خواند.</li>
+<li><b>بسته:</b> ZIP؛ فایل‌های داخلش (json، csv، tsv، txt، md، markdown، html، htm، docx، sql، log، sqlite، db) یکی‌یکی خوانده می‌شوند و بقیه با پیام «رد شد» نادیده گرفته می‌شوند.</li>
 <li>فایل TXT که ردیف اولش با <code>name,</code> شروع شود مثل CSV خوانده می‌شود.</li>
 </ul>
 <h5>چیزهایی که خوانده نمی‌شوند</h5>
@@ -671,10 +671,10 @@ html[lang=en] body{font-family:system-ui,-apple-system,"Segoe UI",Roboto,"Helvet
 </ul>
 <h5>Readable formats</h5>
 <ul>
-<li><b>Data &amp; backup:</b> JSON, <code>.mne.json</code> files, CSV and TSV.</li>
-<li><b>Text:</b> TXT and MD. If the file was produced in the Markhin export format, it is split into separate notes (with name and folder).</li>
-<li><b>Document &amp; page:</b> DOCX and HTML. HTML can read both a notes export and a full app snapshot.</li>
-<li><b>Archive:</b> ZIP; the files inside (json, csv, tsv, txt, md, html, docx) are read one by one and the rest are ignored with a “Skipped” message.</li>
+<li><b>Data &amp; backup:</b> JSON, <code>.mne.json</code> files, CSV, TSV and SQLite databases (<code>.sqlite</code>, <code>.sqlite3</code>, <code>.db</code>; each table becomes one note, and reading them needs an internet connection).</li>
+<li><b>Text:</b> TXT, MD, MARKDOWN, SQL and LOG. A file with an unknown extension is opened as plain text too. If the file was produced in the Markhin export format, it is split into separate notes (with name and folder).</li>
+<li><b>Document &amp; page:</b> DOCX, HTML and HTM. HTML can read both a notes export and a full app snapshot.</li>
+<li><b>Archive:</b> ZIP; the files inside (json, csv, tsv, txt, md, markdown, html, htm, docx, sql, log, sqlite, db) are read one by one and the rest are ignored with a “Skipped” message.</li>
 <li>A TXT file whose first row starts with <code>name,</code> is read like a CSV.</li>
 </ul>
 <h5>What can't be read</h5>
@@ -802,7 +802,7 @@ drop_h:`فایل‌های اکسپورت را اینجا رها کن`,
 drop_s:`چند فایل را هم‌زمان می‌توانی بدهی.`,
 pick:`انتخاب فایل‌ها`,
 qpop:`HTML هم خروجی یادداشت‌ها و هم اسنپ‌شات کامل برنامه را می‌خواند. ZIP می‌تواند شامل بقیه‌ی فرمت‌ها باشد.`,
-fmt_h:`فرمت فایل‌ها`,fmt_data:`داده و بکاپ`,fmt_text:`متن`,fmt_doc:`سند و صفحه`,fmt_pkg:`بسته`,qh_t:`توضیح درباره‌ی فرمت‌ها`,
+fmt_h:`فرمت فایل‌ها`,fmt_data:`داده و بکاپ`,fmt_text:`متن`,fmt_anytext:`سایر فایل‌های متنی`,fmt_doc:`سند و صفحه`,fmt_pkg:`بسته`,qh_t:`توضیح درباره‌ی فرمت‌ها`,
 enc_h:`رمزنگاری‌های پشتیبانی‌شده`,enc_other:`الگوریتم‌های دیگر`,enc_kdf:`اشتقاق کلید`,enc_hash:`هش`,enc_tpl:`قالب آماده`,enc_enc:`کدگذاری`,
 p_sha:`SHA ساده`,p_md5:`MD5 (فقط OpenSSL)`,
 auto_note:`پارامترهایی که در فایل نباشند، به‌صورت خودکار حدس زده می‌شوند.`,
@@ -851,7 +851,8 @@ err_kdf:v=>`نوع KDF «${v.kdf}» در مرورگر پشتیبانی نمی‌
 err_docxml:`word/document.xml پیدا نشد`,
 err_docxbody:`بدنه‌ی DOCX پیدا نشد`,
 err_zip:`کتابخانه‌ی ZIP بارگذاری نشد؛ برای ZIP و DOCX اینترنت لازم است.`,
-err_json:`JSON نامعتبر`
+err_json:`JSON نامعتبر`,
+err_sql:`کتابخانه‌ی SQLite بارگذاری نشد یا فایل دیتابیس معتبر نیست؛ برای خواندن دیتابیس اینترنت لازم است.`
 },
 en:{
 title:`File Viewer & Decryptor`,
@@ -864,7 +865,7 @@ drop_h:`Drop your export files here`,
 drop_s:`You can add several files at once.`,
 pick:`Choose files`,
 qpop:`HTML can read both a notes export and a full app snapshot. A ZIP can contain the other formats.`,
-fmt_h:`File formats`,fmt_data:`Data & backup`,fmt_text:`Text`,fmt_doc:`Document & page`,fmt_pkg:`Archive`,qh_t:`About the formats`,
+fmt_h:`File formats`,fmt_data:`Data & backup`,fmt_text:`Text`,fmt_anytext:`Other text files`,fmt_doc:`Document & page`,fmt_pkg:`Archive`,qh_t:`About the formats`,
 enc_h:`Supported encryption`,enc_other:`Other algorithms`,enc_kdf:`Key derivation`,enc_hash:`Hash`,enc_tpl:`Ready-made formats`,enc_enc:`Encoding`,
 p_sha:`Plain SHA`,p_md5:`MD5 (OpenSSL only)`,
 auto_note:`Parameters missing from the file are guessed automatically.`,
@@ -913,7 +914,8 @@ err_kdf:v=>`The KDF type “${v.kdf}” is not supported in the browser.`,
 err_docxml:`word/document.xml not found`,
 err_docxbody:`DOCX body not found`,
 err_zip:`The ZIP library failed to load; ZIP and DOCX files need an internet connection.`,
-err_json:`Invalid JSON`
+err_json:`Invalid JSON`,
+err_sql:`The SQLite library failed to load or the database file is invalid; reading databases needs an internet connection.`
 }};
 let LANG='fa';
 function T(k,v){
@@ -1888,6 +1890,31 @@ function log(f,w){if(typeof f!=='function'){const t=f;f=()=>t}const m={f,w};LOGS
 const logT=(k,v,w)=>log(()=>T(k,v),w);
 const logW=(b,k)=>log(()=>b+': '+T(k),1);
 const logE=(b,e)=>log(()=>b+': '+eMsg(e),1);
+/* SQLite: loaded on demand (pure-JS build, no WASM), each table becomes one note */
+async function loadSql(){
+  if(!window.initSqlJs){
+    for(const u of ['https://cdnjs.cloudflare.com/ajax/libs/sql.js/1.10.3/sql-asm.js','https://cdn.jsdelivr.net/npm/sql.js@1.10.3/dist/sql-asm.js','https://unpkg.com/sql.js@1.10.3/dist/sql-asm.js']){
+      try{await new Promise((ok,no)=>{const s=document.createElement('script');s.src=u;s.onload=ok;s.onerror=no;document.head.appendChild(s)});if(window.initSqlJs)break}catch(_){}
+    }
+    if(!window.initSqlJs)throw TE('err_sql');
+  }
+  return window.__SQL||(window.__SQL=await initSqlJs());
+}
+async function parseSqlite(buf,src,base){
+  const SQL=await loadSql();let db,out=[];
+  try{
+    db=new SQL.Database(new Uint8Array(buf));
+    const tr=db.exec("SELECT name FROM sqlite_master WHERE type='table' AND name NOT LIKE 'sqlite_%' ORDER BY name");
+    const names=tr.length?tr[0].values.map(r=>String(r[0])):[];
+    for(const t of names){
+      const q=db.exec('SELECT * FROM "'+t.replace(/"/g,'""')+'" LIMIT 5000');
+      const cell=v=>v==null?'':(v instanceof Uint8Array?'[BLOB '+v.length+' B]':String(v)).replace(/[\t\r\n]+/g,' ');
+      const text=q.length?[q[0].columns.join('\t')].concat(q[0].values.map(r=>r.map(cell).join('\t'))).join('\n'):'';
+      out.push(mk({name:t,folder:base,text,src}));
+    }
+  }catch(e){throw TE('err_sql')}finally{try{db&&db.close()}catch(_){}}
+  return out;
+}
 async function handle(name,buf,src,fid){
   const base=name.split('/').pop(),ext=(base.match(/\.([^.]+)$/)||[,''])[1].toLowerCase();
   let out=[];
@@ -1898,11 +1925,12 @@ async function handle(name,buf,src,fid){
       const zip=await loadZip(buf);
       for(const n of Object.keys(zip.files)){
         const f=zip.files[n];if(f.dir||/__MACOSX|(^|\/)\./.test(n))continue;
-        if(!/\.(json|csv|tsv|txt|md|markdown|html?|docx)$/i.test(n)){logT('log_skip',{n},1);continue}
+        if(!/\.(json|csv|tsv|txt|md|markdown|html?|docx|sql|log|sqlite3?|db)$/i.test(n)){logT('log_skip',{n},1);continue}
         await handle(n,await f.async('arraybuffer'),src+' › '+n,fid);
       }
       return;
     }
+    else if(/^(sqlite3?|db)$/i.test(ext)||(sig[0]===0x53&&sig[1]===0x51&&sig[2]===0x4c&&sig[3]===0x69))out=await parseSqlite(buf,src,base);
     else if(/^(png|jpe?g|pdf|gif|webp)$/i.test(ext)){logT('log_img',{base},1);return}
     else{
       const raw=dec(buf);
@@ -1993,6 +2021,18 @@ function snip(n){
 }
 const item=n=>'<button class="it'+(n.id===sel?' on':'')+'" data-id="'+n.id+'"'+(n.id===sel?' aria-current="true"':'')+'><span class="st '+(n.open?'o':'l')+'">'+ico(n.open?'doc':'lock')+'</span><span class="tt"><b'+ldAttr(n.name)+'>'+hlRaw(isoNum(n.name),re)+'</b><p'+(n.open?ldAttr(n.text):' dir="auto"')+'>'+snip(n)+'</p></span></button>';
 function relock(n){n.open=false;n.html='';n.text='';n.k=0;n.err='';n.ek=null}
+/* make a <select> exactly as wide as its selected text (not the widest option) */
+function fitSel(el){
+  if(!el||el.hidden)return;
+  try{
+    const o=el.options[el.selectedIndex];if(!o)return;
+    const cs=getComputedStyle(el),cv=fitSel.c||(fitSel.c=document.createElement('canvas').getContext('2d'));
+    cv.font=cs.fontStyle+' '+cs.fontWeight+' '+cs.fontSize+' '+cs.fontFamily;
+    const w=cv.measureText(o.textContent).width+parseFloat(cs.paddingLeft)+parseFloat(cs.paddingRight)+parseFloat(cs.borderLeftWidth)+parseFloat(cs.borderRightWidth)+2;
+    el.style.width=Math.ceil(w)+'px';
+  }catch(_){}
+}
+document.addEventListener('change',e=>{const t=e.target;if(t&&(t.id==='fol'||t.id==='srt'))fitSel(t)});
 const inTG=()=>{try{const w=window.Telegram&&Telegram.WebApp;return !!(w&&w.platform&&w.platform!=='unknown')}catch(_){return false}};
 function dl(name,text){
   const fn=name.replace(/[\\/:*?"<>|]+/g,'_').slice(0,120);
@@ -2031,6 +2071,7 @@ function draw(){
   const cur=$('#fol').value,fs=[...new Set(notes.map(n=>n.folder).filter(Boolean))];
   $('#fol').hidden=!fs.length;
   $('#fol').innerHTML='<option value="">'+esc(T('all_folders'))+'</option>'+fs.map(f=>'<option'+(f===cur?' selected':'')+' value="'+esc(f)+'">'+esc(f)+'</option>').join('');
+  fitSel($('#fol'));fitSel($('#srt'));
   $('#seg').innerHTML=[['','st_all',notes.length],['l','st_l',lk],['o','st_o',notes.length-lk]].map(([v,t,c])=>'<button class="'+(v===stv?'on':'')+'" data-st="'+v+'">'+esc(T(t))+' <em>'+c+'</em></button>').join('');
   const L=vis();
   $('#cnt').textContent=notes.length?(L.length===notes.length?T('n_notes',{n:notes.length}):T('n_of',{m:L.length,n:notes.length})):'';
